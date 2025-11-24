@@ -25,9 +25,7 @@ export class UsersService {
    */
 
   public async findById(id: number): Promise<UserModel> {
-    const user = await this.userRepository.findById(id);
-    if (!user) return null;
-    return user;
+    return this.userRepository.findById(id);
   }
 
   /**
@@ -38,7 +36,6 @@ export class UsersService {
     page: number,
     offset: number,
   ): Promise<PaginateResponse<UserModel>> {
-    const users = await this.userRepository.findAllPaginate(page, offset);
-    return users;
+    return this.userRepository.findAllPaginate(page, offset);
   }
 }

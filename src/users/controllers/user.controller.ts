@@ -5,10 +5,10 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { RoleDecorator } from '../decorator/role.decorator';
+import { RoleDecorator } from '../../common/decorator/role.decorator';
 import { UsersService } from '../services/users.service';
 import { Role } from '../../database/models/role/role.mode';
-import { RoleGuard } from '../guards/role.guard';
+import { RoleGuard } from '../../common/guards/role.guard';
 import { UserModel } from '../../database/models/user/user.model';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResource } from '../../resource/user.resource';
@@ -49,7 +49,7 @@ export class UserController {
   @UseGuards(RoleGuard)
   @RoleDecorator([Role.ADMIN, Role.USER])
   @Get('me')
-  public getUser(@AuthUser() user: UserModel): UserModel {
-    return user;
+  public getUser(@AuthUser() user: UserModel): Promise<UserModel> {
+    return this.userService.findById(user.id);
   }
 }
