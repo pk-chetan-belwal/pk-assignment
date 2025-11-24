@@ -7,7 +7,6 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { AuthRepository } from '../database/repository/auth.repository';
 
 @Global()
 @Module({
@@ -15,7 +14,7 @@ import { AuthRepository } from '../database/repository/auth.repository';
     UsersModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'SECRET',
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '3600000s' },
     }),
   ],
   providers: [
@@ -24,9 +23,8 @@ import { AuthRepository } from '../database/repository/auth.repository';
     UserAlreadyExistsValidator,
     AuthService,
     JwtStrategy,
-    AuthRepository,
   ],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, BcryptService],
 })
 export class AuthModule {}

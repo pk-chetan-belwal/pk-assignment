@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from '../../database/repository/user.repository';
 import { UserModel } from '../../database/models/user/user.model';
+import { PaginateResponse } from '../../common/utils/paginator';
 
 @Injectable()
 export class UsersService {
@@ -27,5 +28,17 @@ export class UsersService {
     const user = await this.userRepository.findById(id);
     if (!user) return null;
     return user;
+  }
+
+  /**
+   * Return all users in the app
+   * @returns
+   */
+  public async getAllUsersPaginate(
+    page: number,
+    offset: number,
+  ): Promise<PaginateResponse<UserModel>> {
+    const users = await this.userRepository.findAllPaginate(page, offset);
+    return users;
   }
 }

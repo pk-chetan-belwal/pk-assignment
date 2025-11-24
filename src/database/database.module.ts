@@ -15,8 +15,9 @@ import { DatabaseConfigService } from './database-config.service';
     }),
 
     SequelizeModule.forFeature(modelCollection),
+    RepositoryModule,
   ],
-  providers: [DatabaseConfigService, RepositoryModule],
+  providers: [DatabaseConfigService],
   exports: [SequelizeModule, RepositoryModule],
 })
 export class DatabaseModule {}

@@ -6,6 +6,7 @@ import {
   Post,
   Redirect,
   Render,
+  Res,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -16,6 +17,7 @@ import { UserModel } from '../database/models/user/user.model';
 import { ResourceConversionInterceptor } from '../common/interceptor/resource.conversion.interceptor';
 import { ResourceMap } from '../common/decorator/resource-map.decorator';
 import { UserResource } from '../resource/user.resource';
+import { Response } from 'express';
 
 @ApiTags('auth')
 @Controller({ path: 'auth' })
@@ -41,15 +43,13 @@ export class AuthController {
   public getLoginPage() {}
 
   @Post('login')
-  @Redirect('/dashboard')
-  public async login(
-    @Body() loginDto: LoginDto,
-  ): Promise<{ access_token: string }> {
+  public async login(@Body() loginDto: LoginDto, @Res() res: Response) {
     const token = await this.authService.handleLoginRequest(
       loginDto.email,
       loginDto.password,
     );
-    return { access_token: token };
+
+    return res.render('setToken', { access_token: token });
   }
 
   @Get('logout')

@@ -129,7 +129,7 @@
 </style>
 </head>
 <body>
-    {{!-- {{> error-toast}} --}}
+    {{> error-toast}}
     <div class="container">
         {{{body}}}
     </div>
@@ -230,14 +230,14 @@ function handleValidationErrors(errors) {
     }
 }
 
-{{!-- // Show errors passed from server-side
+// Show errors passed from server-side
 {{#if errors}}
 document.addEventListener('DOMContentLoaded', function() {
     {{#each errors}}
     showToast('error', 'Validation Error', '{{this}}');
     {{/each}}
 });
-{{/if}} --}}
+{{/if}}
 </script>
 </body>
 </html>

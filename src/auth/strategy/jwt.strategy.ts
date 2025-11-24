@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { UsersService } from '../../users/services/users.service';
+import { UserModel } from '../../database/models/user/user.model';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,15 +14,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload) {
-    const user = await this.usersService.findById(payload.sub);
+  async validate(payload): Promise<UserModel> {
+    const user = await this.usersService.findById(payload.id);
     if (!user) {
       throw new UnauthorizedException('User no longer exists');
     }
-    return {
-      id: user.id,
-      name: user.name,
-      role: payload.role,
-    };
+    return user;
   }
 }

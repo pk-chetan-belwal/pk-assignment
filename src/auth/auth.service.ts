@@ -3,14 +3,14 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dtos/signup.dto';
 import { BcryptService } from './bcrypt/bcrypt.service';
-import { AuthRepository } from '../database/repository/auth.repository';
 import { UserModel } from '../database/models/user/user.model';
+import { UsersRepository } from '../database/repository/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly hashService: BcryptService,
-    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UsersRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -19,10 +19,12 @@ export class AuthService {
 
     const hashedPassword = await this.hashService.createHash(password);
 
-    const user = this.authRepository.createUser({
+    const user: UserModel = await this.userRepository.createUser({
       ...userData,
       password: hashedPassword,
     });
+
+    await user.$add('roles', [2]); // Assigning User Role
 
     return user;
   }
@@ -31,7 +33,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<string> {
-    const user = await this.authRepository.findUserByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new UnprocessableEntityException({
         constraints: { email: 'Invalid email or password' },
@@ -49,7 +51,7 @@ export class AuthService {
       });
     }
     const payload = {
-      sub: user.id,
+      id: user.id,
     };
 
     return this.jwtService.sign(payload);

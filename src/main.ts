@@ -18,8 +18,12 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-documentation', app, documentFactory);
+  const documentFactory = () => SwaggerModule.createDocument(app, config, {});
+  SwaggerModule.setup('api-documentation', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
@@ -30,6 +34,7 @@ async function bootstrap() {
       extname: 'hbs',
       defaultLayout: 'main',
       layoutsDir: join(__dirname, '..', 'views', 'layouts'),
+      partialsDir: join(__dirname, '..', 'views', 'partials'),
     }),
   );
 

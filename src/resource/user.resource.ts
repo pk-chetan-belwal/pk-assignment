@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { RoleResource } from './role.resource';
 
 export class UserResource {
   @ApiProperty()
@@ -9,4 +10,12 @@ export class UserResource {
   @ApiProperty()
   @Expose()
   public name: string;
+
+  @ApiProperty({
+    type: RoleResource,
+    isArray: true,
+  })
+  @Type(() => RoleResource)
+  @Expose()
+  public roles: RoleResource;
 }
