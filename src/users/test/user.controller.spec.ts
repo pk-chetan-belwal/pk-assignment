@@ -7,6 +7,8 @@ import {
   userPaginationStub,
   multipleUsersPaginationStub,
 } from './stubs/user-pagination.stub';
+import { UserUpdateDto } from '../dtos/user-update.dto';
+import { updatedUserStub } from './stubs/updated-user.stub';
 
 jest.mock('../services/users.service');
 
@@ -191,6 +193,30 @@ describe('UserController', () => {
 
       test('it should have no more pages', () => {
         expect(users.hasMorePages).toBe(false);
+      });
+    });
+  });
+
+  describe('updateUser', () => {
+    let user: UserModel;
+    beforeEach(async () => {
+      jest
+        .spyOn(usersService, 'updateUser')
+        .mockResolvedValue(updatedUserStub());
+      user = await userController.updateUser(
+        { name: 'abc' } as UserUpdateDto,
+        userStub(),
+      );
+    });
+    describe('when updateUser is called', () => {
+      test('it should call the service', () => {
+        expect(usersService.updateUser).toHaveBeenCalledWith(userStub(), {
+          name: 'abc',
+        });
+      });
+
+      test('it should return the updated user', () => {
+        expect(user).toEqual(updatedUserStub());
       });
     });
   });

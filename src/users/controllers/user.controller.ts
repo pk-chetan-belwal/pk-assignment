@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
   Get,
+  Patch,
   Query,
   UseGuards,
   UseInterceptors,
@@ -18,6 +20,7 @@ import { UserAuthGuard } from '../../auth/guards/user-auth/user-auth.guard';
 import { AuthUser } from '../../auth/decorators/auth-user.decorator';
 import { PaginateResponse } from '../../common/utils/paginator';
 import { UserPaginateResource } from '../../resource/user-paginate.resource';
+import { UserUpdateDto } from '../dtos/user-update.dto';
 
 @ApiTags('Users')
 @UseInterceptors(ResourceConversionInterceptor)
@@ -51,5 +54,17 @@ export class UserController {
   @Get('me')
   public getUser(@AuthUser() user: UserModel): Promise<UserModel> {
     return this.userService.findById(user.id);
+  }
+
+  @ResourceMap(UserResource)
+  @ApiResponse({
+    type: UserResource,
+  })
+  @Patch('me')
+  public updateUser(
+    @Body() userUpdateDto: UserUpdateDto,
+    @AuthUser() user: UserModel,
+  ): Promise<UserModel> {
+    return this.userService.updateUser(user, userUpdateDto);
   }
 }

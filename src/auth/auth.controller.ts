@@ -22,7 +22,7 @@ import { Response } from 'express';
 import { AuthUser } from './decorators/auth-user.decorator';
 import { SignedUrlValidGuard } from '../signed-url/guards/signed-url-valid.guard';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller({ path: 'auth' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

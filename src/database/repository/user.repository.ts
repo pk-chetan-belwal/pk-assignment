@@ -79,4 +79,19 @@ export class UsersRepository {
     const paginate = new Paginator(this.userModel);
     return paginate.paginate({ transaction }, page, offset);
   }
+
+  /**
+   * Update the user
+   * @param user UserModel
+   * @param userInfo
+   * @param transaction
+   * @returns
+   */
+  public updateUser(
+    user: UserModel,
+    userInfo: Partial<UserModel>,
+    transaction?: Transaction,
+  ) {
+    return user.set(userInfo).save({ transaction });
+  }
 }

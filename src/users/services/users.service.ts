@@ -38,4 +38,14 @@ export class UsersService {
   ): Promise<PaginateResponse<UserModel>> {
     return this.userRepository.findAllPaginate(page, offset);
   }
+
+  /**
+   * Update the user
+   * @param user The user to update
+   * @param userInfo The information to update the user with
+   * @returns The updated user
+   */
+  public async updateUser(user: UserModel, userInfo: Partial<UserModel>) {
+    return this.userRepository.updateUser(user, userInfo);
+  }
 }

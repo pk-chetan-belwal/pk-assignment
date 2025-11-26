@@ -19,6 +19,11 @@ export class AuthService {
     @InjectQueue('emailQueue') private readonly emailQueue: Queue,
   ) {}
 
+  /**
+   * Handles signup request and creates a new user
+   * @param signupDto - Signup request data
+   * @returns - Newly created user
+   */
   public async handleSignupRequest(signupDto: SignupDto): Promise<UserModel> {
     const { password, ...userData } = signupDto;
 
@@ -38,6 +43,13 @@ export class AuthService {
     return user;
   }
 
+  /**
+   * Handles a login request.
+   * Verifies the user by checking the email and password.
+   * If the user is verified, returns a JWT token containing the user ID.
+   * If the user is not verified, throws an UnprocessableEntityException with the appropriate error message.
+   * @throws UnprocessableEntityException if the user is not verified
+   */
   public async handleLoginRequest(
     email: string,
     password: string,
@@ -66,14 +78,20 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
+  /**
+   * Verify a user by marking the verified field as true
+   * @param user The user to be verified
+   * @param transaction The transaction to use for the query
+   * @returns The updated user
+   */
   public verifyUser(
     user: UserModel,
     transaction?: Transaction,
   ): Promise<UserModel> {
-    return user
-      .set({
-        verified: true,
-      })
-      .save({ transaction });
+    return this.userRepository.updateUser(
+      user,
+      { verified: true },
+      transaction,
+    );
   }
 }
