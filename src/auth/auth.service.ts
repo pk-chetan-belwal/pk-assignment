@@ -5,6 +5,9 @@ import { SignupDto } from './dtos/signup.dto';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { UserModel } from '../database/models/user/user.model';
 import { UsersRepository } from '../database/repository/user.repository';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { SENDMAILJOB } from './jobs/send-mail.job';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +15,7 @@ export class AuthService {
     private readonly hashService: BcryptService,
     private readonly userRepository: UsersRepository,
     private readonly jwtService: JwtService,
+    @InjectQueue('emailQueue') private readonly emailQueue: Queue,
   ) {}
 
   public async handleSignupRequest(signupDto: SignupDto): Promise<UserModel> {
@@ -25,6 +29,10 @@ export class AuthService {
     });
 
     await user.$add('roles', [2]); // Assigning User Role
+
+    await this.emailQueue.add(SENDMAILJOB, {
+      user_id: user.id,
+    });
 
     return user;
   }

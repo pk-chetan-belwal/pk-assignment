@@ -1,6 +1,8 @@
 import {
   BelongsToMany,
   Column,
+  DataType,
+  Default,
   DefaultScope,
   Table,
   Unique,
@@ -28,6 +30,10 @@ export class UserModel extends BaseModel<UserModel> {
 
   @Column
   public password: string;
+
+  @Default(false)
+  @Column(DataType.BOOLEAN)
+  public verified: boolean;
 
   @BelongsToMany(() => RoleModel, () => UserRoleModel)
   public roles: RoleModel[];

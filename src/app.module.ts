@@ -7,6 +7,8 @@ import { CommandModule } from './cli-commands/command.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { EmailModule } from './email/email.module';
+import { QueuesModule } from './queues/queues.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UsersModule,
     AuthModule,
     DashboardModule,
+    EmailModule,
+    QueuesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

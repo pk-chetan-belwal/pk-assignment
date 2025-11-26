@@ -34,7 +34,7 @@ export class AuthController {
   @ResourceMap(UserResource)
   @Redirect('login')
   public async signup(@Body() userInfo: SignupDto): Promise<UserModel> {
-    return await this.authService.handleSignupRequest(userInfo);
+    return this.authService.handleSignupRequest(userInfo);
   }
 
   @Get('/login')
