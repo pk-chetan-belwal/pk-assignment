@@ -61,6 +61,12 @@ export class AuthService {
       });
     }
 
+    if (!user?.verified) {
+      throw new UnprocessableEntityException(
+        'Please verify your email before logging in',
+      );
+    }
+
     const isPasswordValid = await this.hashService.comparePassword(
       password,
       user.password,
