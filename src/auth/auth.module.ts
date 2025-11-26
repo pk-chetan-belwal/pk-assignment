@@ -7,6 +7,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { SendMailJob } from './jobs/send-mail.job';
 
 @Global()
 @Module({
@@ -23,8 +24,9 @@ import { AuthController } from './auth.controller';
     UserAlreadyExistsValidator,
     AuthService,
     JwtStrategy,
+    SendMailJob,
   ],
   controllers: [AuthController],
-  exports: [AuthService, BcryptService],
+  exports: [AuthService, BcryptService, JwtModule],
 })
 export class AuthModule {}

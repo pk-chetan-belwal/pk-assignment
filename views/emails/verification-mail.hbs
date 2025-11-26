@@ -95,7 +95,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>{{companyName}}</h1>
+            <h1>Paktolus</h1>
         </div>
         
         <div class="content">
@@ -106,23 +106,23 @@
             <p>To complete your registration and start using your account, please verify your email address by clicking the button below:</p>
             
             <center>
-                <a href="{{verificationLink}}" class="verify-button">Verify Email Address</a>
+                <a href="{{verificationLink}}" class="verify-button" target="_blank">Verify Email Address</a>
             </center>
             
             <div class="expiry-notice">
-                <strong>⏰ Note:</strong> This verification link will expire in {{expiryTime}} hours. Please verify your email before it expires.
+                <strong>⏰ Note:</strong> This verification link will expire in 1 hours. Please verify your email before it expires.
             </div>
             
             <div class="alt-link">
                 <p><strong>Button not working?</strong> Copy and paste this link into your browser:</p>
-                <p><a href="{{verificationLink}}">{{verificationLink}}</a></p>
+                <p><a href="{{verificationLink}}" target="_blank">{{verificationLink}} </a></p>
             </div>
             
             <p style="margin-top: 30px;">If you didn't create an account with us, please ignore this email or contact our support team if you have concerns.</p>
         </div>
         
         <div class="footer">
-            <p>&copy; {{year}} {{companyName}}. All rights reserved.</p>
+            <p>All rights reserved.</p>
             <p>{{#if supportEmail}}Need help? Contact us at <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>{{/if}}</p>
         </div>
     </div>

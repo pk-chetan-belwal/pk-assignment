@@ -2,6 +2,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
 import { UsersService } from '../../users/services/users.service';
+import { SignedUrlService } from '../../signed-url/services/signed-url.service';
 
 export const SENDMAILJOB = 'sendmailjob';
 @Processor('emailQueue')
@@ -9,6 +10,7 @@ export class SendMailJob {
   constructor(
     private readonly mailerService: MailerService,
     private readonly usersService: UsersService,
+    private readonly signedUrlService: SignedUrlService,
   ) {}
 
   @Process(SENDMAILJOB)
@@ -21,8 +23,13 @@ export class SendMailJob {
       template: 'verification-mail',
       to: user.email,
       context: {
-        name: user.name,
-        // url: ''
+        userName: user.name,
+        verificationLink: this.signedUrlService.generateSignedUrl(
+          {
+            user_id: user.id,
+          },
+          'auth/verify-email',
+        ),
       },
     });
   }

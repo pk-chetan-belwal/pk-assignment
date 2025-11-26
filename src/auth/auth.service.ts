@@ -8,6 +8,7 @@ import { UsersRepository } from '../database/repository/user.repository';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { SENDMAILJOB } from './jobs/send-mail.job';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class AuthService {
@@ -63,5 +64,16 @@ export class AuthService {
     };
 
     return this.jwtService.sign(payload);
+  }
+
+  public verifyUser(
+    user: UserModel,
+    transaction?: Transaction,
+  ): Promise<UserModel> {
+    return user
+      .set({
+        verified: true,
+      })
+      .save({ transaction });
   }
 }

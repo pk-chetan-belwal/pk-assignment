@@ -28,5 +28,6 @@ import { BullAdapter } from '@bull-board/api/bullAdapter';
       name: 'emailQueue',
     }),
   ],
+  exports: [BullModule],
 })
 export class QueuesModule {}

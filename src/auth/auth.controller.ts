@@ -7,6 +7,7 @@ import {
   Redirect,
   Render,
   Res,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -18,6 +19,8 @@ import { ResourceConversionInterceptor } from '../common/interceptor/resource.co
 import { ResourceMap } from '../common/decorator/resource-map.decorator';
 import { UserResource } from '../resource/user.resource';
 import { Response } from 'express';
+import { AuthUser } from './decorators/auth-user.decorator';
+import { SignedUrlValidGuard } from '../signed-url/guards/signed-url-valid.guard';
 
 @ApiTags('auth')
 @Controller({ path: 'auth' })
@@ -62,5 +65,12 @@ export class AuthController {
   @HttpCode(200)
   public logout() {
     return { message: 'Logged out successfully' };
+  }
+
+  @Get('verify-email')
+  @UseGuards(SignedUrlValidGuard)
+  @Redirect('login')
+  public verifyEmail(@AuthUser() user: UserModel): Promise<UserModel> {
+    return this.authService.verifyUser(user);
   }
 }

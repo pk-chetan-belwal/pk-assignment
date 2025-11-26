@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { EmailModule } from './email/email.module';
 import { QueuesModule } from './queues/queues.module';
+import { SignedUrlModule } from './signed-url/signed-url.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { QueuesModule } from './queues/queues.module';
     DashboardModule,
     EmailModule,
     QueuesModule,
+    SignedUrlModule,
   ],
   controllers: [AppController],
   providers: [AppService],
